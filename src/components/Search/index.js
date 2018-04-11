@@ -4,12 +4,14 @@ import styled from 'styled-components';
 // components
 import Logo from '../common/Logo';
 import SearchInput from './SearchInput';
+import ReposList from './ReposList';
 
 const Search = props => {
   return (
     <SCAppWrap>
       <Logo />
       <SearchInput />
+      <ReposList />
     </SCAppWrap>
   );
 };

@@ -19,6 +19,7 @@ const SCHomeLink = styled(Link)`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  min-height: 80px;
   padding-top: 20px;
   margin-bottom: 20px;
   text-decoration: none;

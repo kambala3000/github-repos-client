@@ -14,6 +14,15 @@ class SearchInput extends Component {
     fetchRepos: PropTypes.func.isRequired
   };
 
+  componentDidMount() {
+    const { location, fetchRepos } = this.props;
+    const { search } = location;
+    if (search) {
+      const searchQuery = search.slice(3);
+      fetchRepos(searchQuery);
+    }
+  }
+
   handleSearch = e => {
     const { history } = this.props;
     const inputValue = e.target.value.trim();
