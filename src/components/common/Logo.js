@@ -19,9 +19,8 @@ const SCHomeLink = styled(Link)`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  min-height: 80px;
-  padding-top: 20px;
-  margin-bottom: 20px;
+  min-height: 100px;
+  padding: 20px 0;
   text-decoration: none;
   color: #212121;
   font-family: 'Monospaced Number', sans-serif;

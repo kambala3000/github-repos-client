@@ -30,10 +30,11 @@ class RepoCard extends Component {
     const hasOpenedIssues = !!open_issues_count;
     const hasFooter = language || hasOpenedIssues;
     const starsBlock = this.renderStars();
+    const cardBodyStyles = { padding: '16px 24px 8px 24px' };
 
     return (
       <Col span={8} style={style}>
-        <SCCard title={name} bodyStyle={{ padding: '16px 24px 8px 24px' }} extra={starsBlock}>
+        <SCCard title={name} bodyStyle={cardBodyStyles} extra={starsBlock}>
           {description && <SCDescription>{description}</SCDescription>}
           {hasFooter && (
             <SCCardFooter>
