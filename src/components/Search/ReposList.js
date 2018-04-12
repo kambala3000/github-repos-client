@@ -8,13 +8,26 @@ import { Row } from 'antd';
 import LoadingSinner from '../common/LoadingSpinner';
 import RepoCard from './RepoCard';
 
-const ReposList = ({ isFetchingRepos, repositories }) => {
+const ReposList = ({ isFetchingRepos, isErrorOccured, errorMessage, repositories }) => {
+  const isEmpty = !isFetchingRepos && !isErrorOccured && repositories && repositories.length === 0;
+
   return (
     <SCListWrap>
       <LoadingSinner isLoading={isFetchingRepos} spinnerSize="large" alignOnCenter>
-        <Row type="flex" align="top" gutter={16}>
-          {repositories.map(repoData => <RepoCard key={repoData.id} repoData={repoData} />)}
-        </Row>
+        {repositories && (
+          <Row type="flex" align="top" gutter={16}>
+            {repositories.map(repoData => <RepoCard key={repoData.id} repoData={repoData} />)}
+          </Row>
+        )}
+
+        {isEmpty && <SCEmptyResult>No results found :( Try another search criteria.</SCEmptyResult>}
+
+        {isErrorOccured && (
+          <SCErrorBlock>
+            <p>Error!</p>
+            <p>Reason: {errorMessage}</p>
+          </SCErrorBlock>
+        )}
       </LoadingSinner>
     </SCListWrap>
   );
@@ -22,7 +35,9 @@ const ReposList = ({ isFetchingRepos, repositories }) => {
 
 ReposList.propTypes = {
   isFetchingRepos: PropTypes.bool.isRequired,
-  repositories: PropTypes.array.isRequired
+  isErrorOccured: PropTypes.bool.isRequired,
+  errorMessage: PropTypes.string,
+  repositories: PropTypes.array
 };
 
 const SCListWrap = styled.div`
@@ -30,8 +45,29 @@ const SCListWrap = styled.div`
   padding-top: 50px;
 `;
 
+const SCEmptyResult = styled.div`
+  text-align: center;
+  font-size: 18px;
+`;
+
+const SCErrorBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 18px;
+  p {
+    width: 520px;
+  }
+  p:first-child {
+    text-align: center;
+    font-weight: 800;
+  }
+`;
+
 const mapStateToProps = ({ search }) => ({
   isFetchingRepos: search.isFetchingRepos,
+  isErrorOccured: search.isErrorOccured,
+  errorMessage: search.errorMessage,
   repositories: search.repositories
 });
 

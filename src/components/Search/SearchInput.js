@@ -101,7 +101,6 @@ class SearchInput extends Component {
         <SCSearchWrap>
           <Input.Search
             defaultValue={term}
-            value={term}
             placeholder="Search repositories..."
             onChange={this.handleSearch}
             enterButton
