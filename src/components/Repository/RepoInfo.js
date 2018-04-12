@@ -8,10 +8,15 @@ import { Table } from 'antd';
 // components
 import LoadingSinner from '../common/LoadingSpinner';
 import RepoCard from '../Search/RepoCard';
+import IssueModal from './IssueModal';
 import ErrorBox from '../common/ErrorBox';
 
 // store
-import { getRepoInfo, getIssuesByPage } from '../../store/Repository/actions';
+import {
+  getRepoInfo,
+  getIssuesByPage,
+  openIssueDetailsModal
+} from '../../store/Repository/actions';
 
 // constants
 import { ISSUES_PER_PAGE_COUNTER } from '../../utils/constants';
@@ -26,7 +31,8 @@ class RepoInfo extends Component {
     isErrorOccured: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
     getRepoInfo: PropTypes.func.isRequired,
-    getIssuesByPage: PropTypes.func.isRequired
+    getIssuesByPage: PropTypes.func.isRequired,
+    openIssueDetailsModal: PropTypes.func.isRequired
   };
 
   componentDidMount() {
@@ -41,8 +47,14 @@ class RepoInfo extends Component {
     getIssuesByPage(pagination.current, owner.login, name);
   };
 
+  handleDetailsModal = issueDetails => {
+    const { openIssueDetailsModal } = this.props;
+    openIssueDetailsModal(issueDetails);
+    console.log(issueDetails);
+  };
+
   renderRowActions = (text, rowData) => {
-    return <a>View details</a>;
+    return <a onClick={() => this.handleDetailsModal(rowData)}>View details</a>;
   };
 
   render() {
@@ -81,22 +93,22 @@ class RepoInfo extends Component {
           spinnerSize="large"
           alignOnCenter
         >
-          {!isErrorOccured && (
+          {!isErrorOccured ? (
             <SCLayout>
               <RepoCard repoData={repoData} style={{ width: '795px' }} />
-              <Table
+              <SCTable
                 columns={columns}
                 dataSource={repoIssues}
                 rowKey={item => item.id}
                 pagination={pagination}
                 loading={isFetchingIssuesPage}
                 onChange={this.handleTablePageClick}
-                style={{ width: '795px' }}
               />
+              <IssueModal />
             </SCLayout>
+          ) : (
+            <ErrorBox errorMessage={errorMessage} />
           )}
-
-          {isErrorOccured && <ErrorBox errorMessage={errorMessage} />}
         </LoadingSinner>
       </div>
     );
@@ -107,6 +119,10 @@ const SCLayout = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const SCTable = styled(Table)`
+  width: 795px !important;
 `;
 
 const mapStateToProps = ({ repository }) => ({
@@ -120,5 +136,9 @@ const mapStateToProps = ({ repository }) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, { getRepoInfo, getIssuesByPage })(RepoInfo)
+  connect(mapStateToProps, {
+    getRepoInfo,
+    getIssuesByPage,
+    openIssueDetailsModal
+  })(RepoInfo)
 );

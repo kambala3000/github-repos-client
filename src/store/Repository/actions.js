@@ -3,7 +3,9 @@ import {
   SET_REPO_INFO,
   REPO_INFO_FETCH_ERROR_OCCURED,
   INIT_ISSUES_PAGE_FETCH,
-  SET_ISSUES_BY_PAGE
+  SET_ISSUES_BY_PAGE,
+  OPEN_ISSUE_DETAILS_MODAL,
+  CLOSE_ISSUE_DETAILS_MODAL
 } from './constants';
 
 // api
@@ -15,7 +17,6 @@ export const getRepoInfo = repoId => {
 
     try {
       const { data: repoData } = await apiRepository.fetchRepoInfo(repoId);
-      console.log(repoData);
 
       const { name, owner } = repoData;
       const { data: repoIssues } = await apiRepository.fetchRepoIssues(
@@ -23,7 +24,6 @@ export const getRepoInfo = repoId => {
         owner.login,
         name
       );
-      console.log(repoIssues);
 
       dispatch({ type: SET_REPO_INFO, payload: { repoData, repoIssues } });
     } catch (error) {
@@ -43,10 +43,19 @@ export const getIssuesByPage = (page, ownerLogin, repoName) => {
       ownerLogin,
       repoName
     );
-    console.log(repoIssues);
+
     dispatch({
       type: SET_ISSUES_BY_PAGE,
       payload: { currentPage: page, repoIssues }
     });
   };
 };
+
+export const openIssueDetailsModal = issueDetails => ({
+  type: OPEN_ISSUE_DETAILS_MODAL,
+  payload: issueDetails
+});
+
+export const closeIssueDetailsModal = issueDetails => ({
+  type: CLOSE_ISSUE_DETAILS_MODAL
+});

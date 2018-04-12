@@ -3,7 +3,9 @@ import {
   SET_REPO_INFO,
   REPO_INFO_FETCH_ERROR_OCCURED,
   INIT_ISSUES_PAGE_FETCH,
-  SET_ISSUES_BY_PAGE
+  SET_ISSUES_BY_PAGE,
+  OPEN_ISSUE_DETAILS_MODAL,
+  CLOSE_ISSUE_DETAILS_MODAL
 } from './constants';
 
 const initialState = {
@@ -13,7 +15,9 @@ const initialState = {
   repoIssues: null,
   isErrorOccured: false,
   currentPage: 1,
-  errorMessage: ''
+  errorMessage: '',
+  showDetailsModal: false,
+  issueDetails: {}
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -47,6 +51,17 @@ export default function(state = initialState, { type, payload }) {
         isFetchingIssuesPage: false,
         currentPage: payload.currentPage,
         repoIssues: payload.repoIssues
+      };
+    case OPEN_ISSUE_DETAILS_MODAL:
+      return {
+        ...state,
+        showDetailsModal: true,
+        issueDetails: payload
+      };
+    case CLOSE_ISSUE_DETAILS_MODAL:
+      return {
+        ...state,
+        showDetailsModal: false
       };
     default:
       return state;

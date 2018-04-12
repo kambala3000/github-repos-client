@@ -5,7 +5,15 @@ import { Link } from 'react-router-dom';
 import { Card, Col, Icon } from 'antd';
 
 const RepoCard = ({ style, repoData, displayIssuesLink }) => {
-  const { name, description, language, stargazers_count, open_issues_count, id } = repoData;
+  const {
+    name,
+    description,
+    language,
+    stargazers_count,
+    open_issues_count,
+    id,
+    html_url
+  } = repoData;
   const displayIssues = displayIssuesLink && !!open_issues_count;
   const hasFooter = language || displayIssues;
   const cardBodyStyles = { padding: '16px 24px 8px 24px' };
@@ -33,11 +41,21 @@ const RepoCard = ({ style, repoData, displayIssuesLink }) => {
                 <span>{language}</span>
               </SCLangWrap>
             )}
+
             {displayIssues && (
               <Link to={`/repository/${id}`}>
-                <SCIssuesCounter>Watch {open_issues_count} issues..</SCIssuesCounter>
+                <SCIssuesCounter>
+                  Watch {open_issues_count} issues..
+                </SCIssuesCounter>
                 <Icon type="question-circle-o" />
               </Link>
+            )}
+
+            {!displayIssuesLink && (
+              <a href={html_url} target="_blank">
+                Open on GitHub
+                <SCLinkIcon type="link" />
+              </a>
             )}
           </SCCardFooter>
         )}
@@ -84,6 +102,10 @@ const SCFlagIcon = styled(Icon)`
 
 const SCIssuesCounter = styled.span`
   margin-right: 5px;
+`;
+
+const SCLinkIcon = styled(Icon)`
+  padding-left: 5px;
 `;
 
 export default RepoCard;
