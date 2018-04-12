@@ -2,6 +2,7 @@
   "name": "github-repos-client",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://kambala3000.github.io/github-repos-client/",
   "dependencies": {
     "antd": "^3.4.1",
     "axios": "^0.18.0",
