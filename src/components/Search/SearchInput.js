@@ -12,6 +12,9 @@ import LangSelect from './LangSelect';
 // store
 import { fetchRepos } from '../../store/Search/actions';
 
+// constants
+import { SEARCH_DEBOUNCE_DELAY } from '../../utils/constants';
+
 class SearchInput extends Component {
   static propTypes = {
     fetchRepos: PropTypes.func.isRequired
@@ -48,7 +51,9 @@ class SearchInput extends Component {
 
     for (let param in paramsObj) {
       if (paramsObj[param]) {
-        const queryItem = `${encodeURIComponent(param)}=${encodeURIComponent(paramsObj[param])}`;
+        const queryItem = `${encodeURIComponent(param)}=${encodeURIComponent(
+          paramsObj[param]
+        )}`;
         queryParams.push(queryItem);
       }
     }
@@ -95,7 +100,7 @@ class SearchInput extends Component {
 
   searchDebounce = debounce(async searchQuery => {
     this.props.fetchRepos(searchQuery);
-  }, 400);
+  }, SEARCH_DEBOUNCE_DELAY);
 
   render() {
     const { term, lang } = this.parseQueryParams();
@@ -108,7 +113,6 @@ class SearchInput extends Component {
             defaultValue={term}
             placeholder="Search repositories..."
             onChange={this.handleSearch}
-            enterButton
           />
         </SCSearchWrap>
       </SCFieldsWrap>

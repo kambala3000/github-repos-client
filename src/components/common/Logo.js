@@ -9,7 +9,7 @@ const Logo = () => {
   return (
     <SCHomeLink to="/">
       <SCLogoImage src={GithubLogo} alt="Github logo" />
-      <span>Search API client</span>
+      <span>GitHub repos API client</span>
     </SCHomeLink>
   );
 };
@@ -19,8 +19,8 @@ const SCHomeLink = styled(Link)`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  min-height: 100px;
-  padding: 20px 0;
+  min-height: 110px;
+  padding: 20px 0 30px 0;
   text-decoration: none;
   color: #212121;
   font-family: 'Monospaced Number', sans-serif;

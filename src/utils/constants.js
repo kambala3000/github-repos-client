@@ -19,3 +19,5 @@ export const LANGUAGES_MAP = [
 ];
 
 export const ISSUES_PER_PAGE_COUNTER = 10;
+
+export const SEARCH_DEBOUNCE_DELAY = 400; // ms

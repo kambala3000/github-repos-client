@@ -17,14 +17,13 @@ export const getRepoInfo = repoId => {
 
     try {
       const { data: repoData } = await apiRepository.fetchRepoInfo(repoId);
-
       const { name, owner } = repoData;
+
       const { data: repoIssues } = await apiRepository.fetchRepoIssues(
         1,
         owner.login,
         name
       );
-
       dispatch({ type: SET_REPO_INFO, payload: { repoData, repoIssues } });
     } catch (error) {
       const errorMessage = error.response.data.message;

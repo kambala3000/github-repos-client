@@ -50,7 +50,6 @@ class RepoInfo extends Component {
   handleDetailsModal = issueDetails => {
     const { openIssueDetailsModal } = this.props;
     openIssueDetailsModal(issueDetails);
-    console.log(issueDetails);
   };
 
   renderRowActions = (text, rowData) => {

@@ -6,7 +6,7 @@ import Logo from '../common/Logo';
 import SearchInput from './SearchInput';
 import ReposList from './ReposList';
 
-const Search = props => {
+const Search = () => {
   return (
     <SCAppWrap>
       <Logo />
