@@ -17,3 +17,5 @@ export const LANGUAGES_MAP = [
   { title: 'Scala', value: 'scala' },
   { title: 'Objective-C', value: 'objective-c' }
 ];
+
+export const ISSUES_PER_PAGE_COUNTER = 10;

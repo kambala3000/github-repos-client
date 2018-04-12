@@ -7,27 +7,46 @@ import { Row } from 'antd';
 // components
 import LoadingSinner from '../common/LoadingSpinner';
 import RepoCard from './RepoCard';
+import ErrorBox from '../common/ErrorBox';
 
-const ReposList = ({ isFetchingRepos, isErrorOccured, errorMessage, repositories }) => {
-  const isEmpty = !isFetchingRepos && !isErrorOccured && repositories && repositories.length === 0;
+const ReposList = ({
+  isFetchingRepos,
+  isErrorOccured,
+  errorMessage,
+  repositories
+}) => {
+  const isEmpty =
+    !isFetchingRepos &&
+    !isErrorOccured &&
+    repositories &&
+    repositories.length === 0;
 
   return (
     <SCListWrap>
-      <LoadingSinner isLoading={isFetchingRepos} spinnerSize="large" alignOnCenter>
+      <LoadingSinner
+        isLoading={isFetchingRepos}
+        spinnerSize="large"
+        alignOnCenter
+      >
         {repositories && (
           <Row type="flex" align="top" gutter={16}>
-            {repositories.map(repoData => <RepoCard key={repoData.id} repoData={repoData} />)}
+            {repositories.map(repoData => (
+              <RepoCard
+                key={repoData.id}
+                repoData={repoData}
+                displayIssuesLink
+              />
+            ))}
           </Row>
         )}
 
-        {isEmpty && <SCEmptyResult>No results found :( Try another search criteria.</SCEmptyResult>}
-
-        {isErrorOccured && (
-          <SCErrorBlock>
-            <p>Error!</p>
-            <p>Reason: {errorMessage}</p>
-          </SCErrorBlock>
+        {isEmpty && (
+          <SCEmptyResult>
+            No results found :( Try another search criteria.
+          </SCEmptyResult>
         )}
+
+        {isErrorOccured && <ErrorBox errorMessage={errorMessage} />}
       </LoadingSinner>
     </SCListWrap>
   );
@@ -48,20 +67,6 @@ const SCListWrap = styled.div`
 const SCEmptyResult = styled.div`
   text-align: center;
   font-size: 18px;
-`;
-
-const SCErrorBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 18px;
-  p {
-    width: 520px;
-  }
-  p:first-child {
-    text-align: center;
-    font-weight: 800;
-  }
 `;
 
 const mapStateToProps = ({ search }) => ({

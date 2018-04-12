@@ -1,62 +1,55 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Card, Col, Icon } from 'antd';
 
-class RepoCard extends Component {
-  static propTypes = {
-    repoData: PropTypes.object.isRequired
-  };
+const RepoCard = ({ style, repoData, displayIssuesLink }) => {
+  const { name, description, language, stargazers_count, open_issues_count, id } = repoData;
+  const displayIssues = displayIssuesLink && !!open_issues_count;
+  const hasFooter = language || displayIssues;
+  const cardBodyStyles = { padding: '16px 24px 8px 24px' };
 
-  renderStars = () => {
-    const { stargazers_count } = this.props.repoData;
+  return (
+    <Col span={8} style={style}>
+      <SCCard
+        title={name}
+        bodyStyle={cardBodyStyles}
+        extra={
+          stargazers_count > 0 ? (
+            <div>
+              <Icon type="star" />
+              <SCStarsCounter>{stargazers_count}</SCStarsCounter>
+            </div>
+          ) : null
+        }
+      >
+        {description && <SCDescription>{description}</SCDescription>}
+        {hasFooter && (
+          <SCCardFooter>
+            {language && (
+              <SCLangWrap>
+                <SCFlagIcon type="flag" />
+                <span>{language}</span>
+              </SCLangWrap>
+            )}
+            {displayIssues && (
+              <Link to={`/repository/${id}`}>
+                <SCIssuesCounter>Watch {open_issues_count} issues..</SCIssuesCounter>
+                <Icon type="question-circle-o" />
+              </Link>
+            )}
+          </SCCardFooter>
+        )}
+      </SCCard>
+    </Col>
+  );
+};
 
-    if (stargazers_count > 0) {
-      return (
-        <div>
-          <Icon type="star" />
-          <SCStarsCounter>{stargazers_count}</SCStarsCounter>
-        </div>
-      );
-    }
-
-    return null;
-  };
-
-  render() {
-    const { style, repoData } = this.props;
-    const { name, description, language, open_issues_count, id } = repoData;
-    const hasOpenedIssues = !!open_issues_count;
-    const hasFooter = language || hasOpenedIssues;
-    const starsBlock = this.renderStars();
-    const cardBodyStyles = { padding: '16px 24px 8px 24px' };
-
-    return (
-      <Col span={8} style={style}>
-        <SCCard title={name} bodyStyle={cardBodyStyles} extra={starsBlock}>
-          {description && <SCDescription>{description}</SCDescription>}
-          {hasFooter && (
-            <SCCardFooter>
-              {language && (
-                <SCLangWrap>
-                  <SCFlagIcon type="flag" />
-                  <span>{language}</span>
-                </SCLangWrap>
-              )}
-              {hasOpenedIssues && (
-                <Link to={`/repository/${id}`}>
-                  <SCIssuesCounter>Watch {open_issues_count} issues..</SCIssuesCounter>
-                  <Icon type="question-circle-o" />
-                </Link>
-              )}
-            </SCCardFooter>
-          )}
-        </SCCard>
-      </Col>
-    );
-  }
-}
+RepoCard.propTypes = {
+  repoData: PropTypes.object.isRequired,
+  displayIssuesLink: PropTypes.bool
+};
 
 const SCCard = styled(Card)`
   margin-bottom: 20px !important;

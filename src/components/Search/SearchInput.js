@@ -43,7 +43,7 @@ class SearchInput extends Component {
   };
 
   setQueryParams = paramsObj => {
-    const { history } = this.props;
+    const { history, location } = this.props;
     const queryParams = [];
 
     for (let param in paramsObj) {
@@ -53,9 +53,14 @@ class SearchInput extends Component {
       }
     }
 
-    history.push({
-      search: queryParams.join('&')
-    });
+    const newParams = queryParams.join('&');
+    const oldParams = location.search.slice(1);
+
+    if (newParams !== oldParams) {
+      history.push({
+        search: newParams
+      });
+    }
   };
 
   prepareSearchQuery = (term, lang) => {
@@ -68,10 +73,10 @@ class SearchInput extends Component {
 
   handleSelect = lang => {
     const { fetchRepos } = this.props;
-    const { term } = this.parseQueryParams();
+    const { term, lang: oldLang } = this.parseQueryParams();
     this.setQueryParams({ term, lang });
 
-    if (term) {
+    if (term && lang !== oldLang) {
       const searchQuery = this.prepareSearchQuery(term, lang);
       fetchRepos(searchQuery);
     }
@@ -79,10 +84,10 @@ class SearchInput extends Component {
 
   handleSearch = e => {
     const term = e.target.value.trim();
-    const { lang } = this.parseQueryParams();
+    const { term: oldTerm, lang } = this.parseQueryParams();
     this.setQueryParams({ term, lang });
 
-    if (term) {
+    if (term && term !== oldTerm) {
       const searchQuery = this.prepareSearchQuery(term, lang);
       this.searchDebounce(searchQuery);
     }
